@@ -28,7 +28,7 @@ public class Sala {
 	private boolean disponibilidade;
 	
 	// Lista de reservas, pois uma sala pode ter várias reservas
-	@OneToMany(mappedBy = "sala", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "salaReservada", cascade = CascadeType.ALL)
 	private List<Reserva> reservas;
 
 	// Construtor vazio

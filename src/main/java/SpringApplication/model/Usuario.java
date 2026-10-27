@@ -25,7 +25,7 @@ public class Usuario {
 	private String email;
 	
 	// Lista de reservas, pois um usuário pode ter várias reservas
-	@OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usuarioAlugou",cascade = CascadeType.ALL)
 	private List<Reserva> reservas;
 
 	// Construtor da classe Usuario
