@@ -12,7 +12,7 @@ import SpringApplication.model.Usuario;
 
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva, Long>{
-Optional<Reserva> findByNameOrEmail(String string, String string2);
-Optional<Reserva> findBySala(Sala sala);
-Optional<Reserva> findByInicioAndByFim(LocalDate inicio, LocalDate fim);
+Optional<Reserva> findBySalaReservadaNomeOrUsuarioAlugouEmail(String string, String string2);
+Optional<Reserva> findBySalaReservada(Sala sala);
+Optional<Reserva> findByInicioAndFim(LocalDate inicio, LocalDate fim);
 }
