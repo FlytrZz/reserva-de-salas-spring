@@ -42,7 +42,7 @@ public class ReservaService {
 		reserva.setId(null);
 		reserva.setUsuarioAlugou(usuario);
 		reserva.setSalaReservada(sala);
-		Optional<Reserva> reservaExistente = repository.findByNameOrEmail(sala.getNome(), usuario.getEmail());
+		Optional<Reserva> reservaExistente = repository.findBySalaReservadaNomeOrUsuarioAlugouEmail(sala.getNome(), usuario.getEmail());
 		if(reservaExistente.isPresent()) {
 			throw new IllegalArgumentException("Reserva já existente!");
 		} else {

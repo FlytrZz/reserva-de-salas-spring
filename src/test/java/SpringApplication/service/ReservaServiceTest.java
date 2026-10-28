@@ -105,7 +105,7 @@ class ReservaServiceTest {
 		reservaNova.setUsuarioAlugou(usuarioNovo);
 		reservaNova.setSalaReservada(salaNova);
 		
-		when(repository.findByNameOrEmail(salaNova.getNome(), usuarioNovo.getEmail())).thenReturn(Optional.empty());
+		when(repository.findBySalaReservadaNomeOrUsuarioAlugouEmail(salaNova.getNome(), usuarioNovo.getEmail())).thenReturn(Optional.empty());
 		when(repository.save(any(Reserva.class))).thenReturn(reservaNova);
 		
 		//ACT
@@ -114,7 +114,7 @@ class ReservaServiceTest {
 		//ASSERT
 		Assertions.assertNotNull(reservaOP);
 		Assertions.assertEquals(50, salaNova.getCapacidade());
-		verify(repository, times(1)).findByNameOrEmail(salaNova.getNome(), usuarioNovo.getEmail());
+		verify(repository, times(1)).findBySalaReservadaNomeOrUsuarioAlugouEmail(salaNova.getNome(), usuarioNovo.getEmail());
 		verify(repository, times(1)).save(any(Reserva.class));
 	}
 	
@@ -126,14 +126,14 @@ class ReservaServiceTest {
 		Usuario usuarioNovo = new Usuario("teste","teste@email.com");
 		Reserva reservaNova = new Reserva(LocalDateTime.now(), LocalDateTime.now().plusHours(2));
 		
-		when(repository.findByNameOrEmail(salaNova.getNome(), usuarioNovo.getEmail())).thenReturn(Optional.of(reservaNova));
+		when(repository.findBySalaReservadaNomeOrUsuarioAlugouEmail(salaNova.getNome(), usuarioNovo.getEmail())).thenReturn(Optional.of(reservaNova));
 		
 		//ACT
 		Exception exceptionCriacao = assertThrows(IllegalArgumentException.class, () -> service.criarReserva(reservaNova, usuarioNovo, salaNova));
 		
 		//ASSERT
 		Assertions.assertEquals("Reserva já existente!",exceptionCriacao.getMessage());
-		verify(repository, times(1)).findByNameOrEmail(salaNova.getNome(), usuarioNovo.getEmail());
+		verify(repository, times(1)).findBySalaReservadaNomeOrUsuarioAlugouEmail(salaNova.getNome(), usuarioNovo.getEmail());
 	}
 	
 	@Test
