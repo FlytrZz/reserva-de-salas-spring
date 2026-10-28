@@ -30,7 +30,7 @@ public class SalaController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> buscarPorId(@PathVariable Long id){
+	public ResponseEntity<Object> buscarPorId(@PathVariable("id") Long id){
 			Sala salaBuscada = service.buscarPorId(id);
 			return ResponseEntity.status(HttpStatus.OK).body(salaBuscada);
 	}
@@ -42,13 +42,13 @@ public class SalaController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> atualizarSala(@PathVariable Long id, @RequestBody Sala sala){
+	public ResponseEntity<Object> atualizarSala(@PathVariable("id") Long id, @RequestBody Sala sala){
 			Sala salaAtualizada = service.atualizarSala(sala,id);
 			return ResponseEntity.status(HttpStatus.OK).body(salaAtualizada);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> removerSala(@PathVariable Long id){
+	public ResponseEntity<Object> removerSala(@PathVariable("id") Long id){
 			service.apagarSala(id);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
