@@ -30,42 +30,26 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> buscarPorId(@PathVariable Long id){
-		try{
+	public ResponseEntity<Object> buscarPorId(@PathVariable("id") Long id){
 			Usuario usuarioBuscado = service.buscarPorId(id);
 			return ResponseEntity.status(HttpStatus.OK).body(usuarioBuscado);
-		} catch(IllegalArgumentException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		}
 	}
 	
 	@PostMapping
 	public ResponseEntity<Object> criarUsuario(@RequestBody Usuario usuario){
-		try{
 			Usuario usuarioNovo = service.criarUsuario(usuario);
 			return ResponseEntity.status(HttpStatus.CREATED).body(usuarioNovo);
-		} catch(IllegalArgumentException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-		}
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario){
-		try{
+	public ResponseEntity<Object> atualizarUsuario(@PathVariable("id") Long id, @RequestBody Usuario usuario){
 			Usuario usuarioAtualizado = service.atualizarUsuario(usuario,id);
 			return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-		} catch(IllegalArgumentException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		}
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> removerUsuario(@PathVariable Long id){
-		try {
+	public ResponseEntity<Object> removerUsuario(@PathVariable("id") Long id){
 			service.removerUsuario(id);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-		} catch(IllegalArgumentException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		}
 	}
 }
