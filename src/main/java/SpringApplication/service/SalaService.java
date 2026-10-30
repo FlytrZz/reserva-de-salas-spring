@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import SpringApplication.DTO.SalaDTO;
 import SpringApplication.model.Sala;
 import SpringApplication.repository.SalaRepository;
 
@@ -26,50 +27,38 @@ public class SalaService {
 	@Transactional(readOnly = true)
 	// Transactional com readOnly = true faz a consulta somente buscar dados de forma otimizada, sem monitorar alterações ou etc
 	public Sala buscarPorId(Long id) {
-		Optional<Sala> sala = repository.findById(id);
-		if(sala.isEmpty()) {
-			throw new IllegalArgumentException("Sala não encontrada!");
-		} else {
-			return sala.get();
-		}
+		return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Sala não encontrada!"));
 	}
 
 	@Transactional
 	// Transactional cria uma parte do objeto na memoria e garante persistência, além de monitorar possiveis alterações
-	public Sala criarSala(Sala sala) {
-		sala.setId(null);
-		Optional<Sala> salaExistente = repository.findByNome(sala.getNome());
-		if(salaExistente.isPresent()) {
-			throw new IllegalArgumentException("Sala já existente!");
-		}
+	public Sala criarSala(SalaDTO dto) {
+		Sala sala = new Sala();
+		
+		sala.setNome(dto.nome());
+		sala.setCapacidade(dto.capacidade());
+		sala.setDisponibilidade(dto.disponibilidade());
+		
 		return repository.save(sala);
 	}
 
 	@Transactional
 	// Transactional cria uma parte do objeto na memoria e garante persistência, além de monitorar possiveis alterações
-	public Sala atualizarSala(Sala sala, Long id) {
-		sala.setId(id);
-		Optional<Sala> salaExistente = repository.findById(id);
-		if(salaExistente.isEmpty()) {
-			throw new IllegalArgumentException("Sala não encontrada para atualização dos dados!");
-		} else {
-			Sala salaAtualizada = salaExistente.get();
-			salaAtualizada.setNome(sala.getNome());
-			salaAtualizada.setCapacidade(sala.getCapacidade());
-			salaAtualizada.setDisponibilidade(sala.getDisponibilidade());
-			return repository.save(salaAtualizada);
-		}
+	public Sala atualizarSala(SalaDTO dto, Long id) {
+		Sala sala = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Sala não encontrada!"));
+		
+		sala.setNome(dto.nome());
+		sala.setCapacidade(dto.capacidade());
+		sala.setDisponibilidade(dto.disponibilidade());
+		
+		return repository.save(sala);
 	}
 
 	@Transactional
 	// Transactional cria uma parte do objeto na memoria e garante persistência, além de monitorar possiveis alterações
 	public void apagarSala(Long id) {
-		Optional<Sala> sala = repository.findById(id);
-		if(sala.isEmpty()) {
-			throw new IllegalArgumentException("Sala não encontrada para remoção!");
-		} else {
-			repository.deleteById(id);
-		}
+		Sala sala = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Sala não encontrada!"));
+		repository.delete(sala);
 	}
 
 }

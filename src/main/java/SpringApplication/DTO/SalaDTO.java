@@ -1,5 +1,9 @@
 package SpringApplication.DTO;
 
-public record SalaDTO(Long id, String nome, int capacidade, boolean disponibilidade) {
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
+public record SalaDTO(Long id, @NotBlank String nome, @Positive int capacidade, boolean disponibilidade) {
 
 }
