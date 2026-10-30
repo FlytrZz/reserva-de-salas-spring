@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import SpringApplication.DTO.UsuarioDTO;
 import SpringApplication.model.Usuario;
 import SpringApplication.repository.UsuarioRepository;
 
@@ -26,50 +27,36 @@ public class UsuarioService {
 	@Transactional(readOnly = true)
 	// Transactional com readOnly = true faz a consulta somente buscar dados de forma otimizada, sem monitorar alterações ou etc
 	public Usuario buscarPorId(Long id) {
-		Optional<Usuario> usuario = repository.findById(id);
-		if(usuario.isEmpty()) {
-			throw new IllegalArgumentException("Usuario não encontrado!");
-		} else {
-			return usuario.get();
-		}
+		return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado!"));
 	}
 
 	@Transactional
 	// Transactional cria uma parte do objeto na memoria e garante persistência, além de monitorar possiveis alterações
-	public Usuario criarUsuario(Usuario usuario) {
-		usuario.setId(null);
-		Optional<Usuario> usuarioExistente = repository.findByEmail(usuario.getEmail());
-		if (usuarioExistente.isPresent()) {
-			throw new IllegalArgumentException("Usuário já existente!");
-		} else {
-			return repository.save(usuario);
-		}
+	public Usuario criarUsuario(UsuarioDTO dto) {
+		Usuario usuario = new Usuario();
+		
+		usuario.setNome(dto.nome());
+		usuario.setEmail(dto.email());
+		
+		return repository.save(usuario);
 	}
 
 	@Transactional
 	// Transactional cria uma parte do objeto na memoria e garante persistência, além de monitorar possiveis alterações
-	public Usuario atualizarUsuario(Usuario usuario, Long id) {
-		usuario.setId(id);
-		Optional<Usuario> usuarioExistente = repository.findById(id);
-		if(usuarioExistente.isEmpty()) {
-			throw new IllegalArgumentException("Usuário não existe!"); 
-		} else {
-			Usuario usuarioAtualizado = usuarioExistente.get();
-			usuarioAtualizado.setNome(usuario.getNome());
-			usuarioAtualizado.setEmail(usuario.getEmail());
-			return repository.save(usuarioAtualizado);
-		}
+	public Usuario atualizarUsuario(UsuarioDTO dto, Long id) {
+		Usuario usuario = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado!"));
+		
+		usuario.setNome(dto.nome());
+		usuario.setEmail(dto.email());
+		
+		return repository.save(usuario);
 	}
 
 	@Transactional
 	// Transactional cria uma parte do objeto na memoria e garante persistência, além de monitorar possiveis alterações
 	public void removerUsuario(Long id) {
-		Optional<Usuario> usuarioExistente = repository.findById(id);
-		if(usuarioExistente.isEmpty()) {
-			throw new IllegalArgumentException("Usuário não existe!"); 
-		} else {
-			repository.deleteById(id);
-		}
+		Usuario usuario = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado!"));
+		repository.delete(usuario);
 	}
 
 }

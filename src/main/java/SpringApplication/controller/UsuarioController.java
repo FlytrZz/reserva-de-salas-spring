@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import SpringApplication.DTO.UsuarioDTO;
 import SpringApplication.model.Usuario;
 import SpringApplication.service.UsuarioService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/usuarios")
@@ -36,14 +38,14 @@ public class UsuarioController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> criarUsuario(@RequestBody Usuario usuario){
-			Usuario usuarioNovo = service.criarUsuario(usuario);
+	public ResponseEntity<Object> criarUsuario(@Valid @RequestBody UsuarioDTO dto){
+			Usuario usuarioNovo = service.criarUsuario(dto);
 			return ResponseEntity.status(HttpStatus.CREATED).body(usuarioNovo);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> atualizarUsuario(@PathVariable("id") Long id, @RequestBody Usuario usuario){
-			Usuario usuarioAtualizado = service.atualizarUsuario(usuario,id);
+	public ResponseEntity<Object> atualizarUsuario(@Valid @RequestBody UsuarioDTO dto, @PathVariable("id") Long id){
+			Usuario usuarioAtualizado = service.atualizarUsuario(dto,id);
 			return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
 	}
 	
