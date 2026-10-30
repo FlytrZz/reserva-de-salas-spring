@@ -41,12 +41,7 @@ public class ReservaService {
 	@Transactional(readOnly = true)
 	// Transactional com readOnly = true faz a consulta somente buscar dados de forma otimizada, sem monitorar alterações ou etc
 	public Reserva buscarPorId(Long id) {
-		Optional<Reserva> reserva = reservaRepository.findById(id);
-		if(reserva.isEmpty()) {
-			throw new IllegalArgumentException("Reserva não achada!");
-		} else {
-			return reserva.get();
-		}
+		return reservaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Reserva não encontrada!"));
 	}
 
 	@Transactional
@@ -58,16 +53,19 @@ public class ReservaService {
 		
 		Usuario usuario = usuarioRepository.findById(dto.idUsuario()).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado!"));
 		Sala sala = salaRepository.findById(dto.idSala()).orElseThrow(() -> new IllegalArgumentException("Sala não encontrada!"));
+		
 		boolean existeConflito = reservaRepository.existsBySalaReservadaAndInicioBeforeAndFimAfter(sala, dto.fim(), dto.inicio());
 		if(existeConflito) {
 			throw new IllegalStateException("A sala já possui uma reserva nesse horário!");
 		}
+		
 		Reserva reserva = new Reserva();
 		reserva.setSalaReservada(sala);
 		reserva.setUsuarioAlugou(usuario);
 		reserva.setInicio(dto.inicio());
 		reserva.setFim(dto.fim());
 		reserva.setStatus(Status.ATIVA);
+		
 		return reservaRepository.save(reserva);
 	}
 	

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import SpringApplication.service.SalaService;
 import jakarta.validation.Valid;
+import SpringApplication.DTO.SalaDTO;
 import SpringApplication.model.Sala;
 
 @RestController
@@ -37,14 +38,14 @@ public class SalaController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> criarSala(@Valid @RequestBody Sala sala){
-			Sala novaSala = service.criarSala(sala);
+	public ResponseEntity<Object> criarSala(@Valid @RequestBody SalaDTO dto){
+			Sala novaSala = service.criarSala(dto);
 			return ResponseEntity.status(HttpStatus.CREATED).body(novaSala);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> atualizarSala(@PathVariable("id") Long id, @RequestBody Sala sala){
-			Sala salaAtualizada = service.atualizarSala(sala,id);
+	public ResponseEntity<Object> atualizarSala(@Valid @RequestBody SalaDTO dto, @PathVariable("id") Long id){
+			Sala salaAtualizada = service.atualizarSala(dto,id);
 			return ResponseEntity.status(HttpStatus.OK).body(salaAtualizada);
 	}
 	
