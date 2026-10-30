@@ -12,4 +12,14 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	}
+	
+	@ExceptionHandler(IllegalStateException.class)
+	public ResponseEntity<String> handleIllegalState(IllegalStateException ex) {
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+	}
+	
+	@ExceptionHandler(DadosInvalidosException.class)
+	public ResponseEntity<String> handleDadosInvalidos(DadosInvalidosException ex) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+	}
 }

@@ -3,6 +3,8 @@ package SpringApplication.model;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,6 +36,7 @@ public class Reserva {
 	private Sala salaReservada;
 	
 	// Campo STATUS para verificação do status da reserva
+	@Enumerated(EnumType.STRING)
 	private Status status;
 	
 	// Construtor Vazio

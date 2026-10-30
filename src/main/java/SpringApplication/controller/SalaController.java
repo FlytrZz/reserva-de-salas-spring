@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import SpringApplication.service.SalaService;
+import jakarta.validation.Valid;
 import SpringApplication.model.Sala;
 
 @RestController
@@ -36,7 +37,7 @@ public class SalaController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> criarSala(@RequestBody Sala sala){
+	public ResponseEntity<Object> criarSala(@Valid @RequestBody Sala sala){
 			Sala novaSala = service.criarSala(sala);
 			return ResponseEntity.status(HttpStatus.CREATED).body(novaSala);
 	}

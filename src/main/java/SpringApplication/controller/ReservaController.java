@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import SpringApplication.DTO.ReservaDTO;
 import SpringApplication.model.Reserva;
 import SpringApplication.model.Sala;
 import SpringApplication.model.Usuario;
 import SpringApplication.service.ReservaService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/reservas")
@@ -38,14 +40,14 @@ public class ReservaController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> criarReserva(@RequestBody Reserva reserva, Usuario usuario, Sala sala){
-			Reserva reservaNova = service.criarReserva(reserva,usuario,sala);
-			return ResponseEntity.status(HttpStatus.CREATED).body(reservaNova);
+	public ResponseEntity<Object> criarReserva(@Valid @RequestBody ReservaDTO dto){
+			Reserva reservaNova = service.criarReserva(dto);
+			return ResponseEntity.status(HttpStatus.CREATED).body(dto);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> atualizarReserva(@PathVariable("id") Long id, @RequestBody Reserva reserva){
-			Reserva reservaAtualizada = service.atualizarReserva(reserva,id);
+	public ResponseEntity<Object> atualizarReserva(@Valid @RequestBody ReservaDTO dto, @PathVariable("id") Long id){
+			Reserva reservaAtualizada = service.atualizarReserva(dto,id);
 			return ResponseEntity.status(HttpStatus.OK).body(reservaAtualizada);
 	}
 	
